@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Therian — Bioreactor Plastic Recycling</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-light: #5BB8E8;
+    --blue-mid: #3A8FC4;
+    --navy: #1A2E44;
+    --navy-dark: #0D1E2E;
+    --white: #F4F8FC;
+    --gray: #8AA0B4;
+    --accent: #76E0C2;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy-dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(13,30,46,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(91,184,232,0.12);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; }
+  .nav-logo img { height: 38px; filter: brightness(1.1); }
+  .nav-logo span { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; color: var(--white); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--gray); font-size: 0.9rem; font-weight: 400; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--blue-light); }
+  .nav-cta {
+    background: var(--accent); color: var(--navy-dark);
+    padding: 0.6rem 1.5rem; border-radius: 100px;
+    font-weight: 600; font-size: 0.88rem; text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 80% 50%, rgba(91,184,232,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 80%, rgba(118,224,194,0.06) 0%, transparent 60%);
+  }
+
+  /* Animated grid */
+  .hero-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(91,184,232,0.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(91,184,232,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridShift 20s linear infinite;
+  }
+  @keyframes gridShift { to { background-position: 60px 60px; } }
+
+  .hero-text { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(118,224,194,0.1); border: 1px solid rgba(118,224,194,0.25);
+    color: var(--accent); padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em { font-style: normal; color: var(--blue-light); }
+
+  .hero-sub {
+    font-size: 1.1rem; font-weight: 300; color: rgba(244,248,252,0.65);
+    line-height: 1.7; max-width: 480px; margin-bottom: 2.5rem;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--blue-light), var(--blue-mid));
+    color: white; padding: 0.9rem 2rem; border-radius: 100px;
+    font-weight: 600; font-size: 0.95rem; text-decoration: none;
+    box-shadow: 0 8px 32px rgba(91,184,232,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(91,184,232,0.45); }
+  .btn-ghost {
+    color: var(--white); padding: 0.9rem 2rem; border-radius: 100px;
+    font-weight: 500; font-size: 0.95rem; text-decoration: none;
+    border: 1px solid rgba(244,248,252,0.2);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--blue-light); background: rgba(91,184,232,0.06); }
+
+  /* Hero visual */
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .bioreactor {
+    width: 340px; height: 340px;
+    position: relative;
+  }
+
+  /* Outer glow ring */
+  .ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(91,184,232,0.2);
+    animation: spin linear infinite;
+  }
+  .ring-1 { inset: 0; animation-duration: 20s; }
+  .ring-2 { inset: 20px; animation-duration: 15s; animation-direction: reverse; border-color: rgba(118,224,194,0.15); }
+  .ring-3 { inset: 40px; animation-duration: 25s; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Dashes on ring */
+  .ring::before {
+    content: '';
+    position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 6px; border-radius: 50%; background: var(--blue-light);
+    box-shadow: 0 0 10px var(--blue-light);
+  }
+
+  .reactor-core {
+    position: absolute;
+    inset: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(26,46,68,0.9), rgba(13,30,46,0.95));
+    border: 1px solid rgba(91,184,232,0.3);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 60px rgba(91,184,232,0.15), inset 0 0 40px rgba(91,184,232,0.05);
+  }
+
+  .reactor-icon {
+    font-size: 4rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  /* Floating microbe particles */
+  .particle {
+    position: absolute; border-radius: 50%;
+    background: var(--blue-light);
+    opacity: 0.6;
+    animation: floatParticle linear infinite;
+  }
+  @keyframes floatParticle {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-280px) rotate(360deg); opacity: 0; }
+  }
+
+  /* ---- STATS BAR ---- */
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(91,184,232,0.1);
+    border-top: 1px solid rgba(91,184,232,0.1);
+    border-bottom: 1px solid rgba(91,184,232,0.1);
+  }
+  .stat-item {
+    padding: 2.5rem;
+    background: var(--navy-dark);
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.8rem; font-weight: 800;
+    color: var(--blue-light);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+  .stat-label { font-size: 0.85rem; color: var(--gray); font-weight: 300; }
+
+  /* ---- HOW IT WORKS ---- */
+  section { padding: 6rem 4rem; }
+  .section-label {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent); font-weight: 500; margin-bottom: 1rem;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.1; margin-bottom: 1rem;
+  }
+  .section-sub { color: rgba(244,248,252,0.55); font-weight: 300; font-size: 1.05rem; line-height: 1.7; max-width: 560px; }
+
+  .process-grid {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 1.5rem; margin-top: 4rem;
+    position: relative;
+  }
+  .process-grid::before {
+    content: '';
+    position: absolute; top: 35px; left: 10%; right: 10%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(91,184,232,0.3), transparent);
+  }
+
+  .process-card {
+    background: rgba(26,46,68,0.5);
+    border: 1px solid rgba(91,184,232,0.1);
+    border-radius: 16px; padding: 2rem;
+    position: relative;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .process-card:hover { border-color: rgba(91,184,232,0.35); transform: translateY(-4px); }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--blue-light); letter-spacing: 0.1em;
+    background: rgba(91,184,232,0.1); border: 1px solid rgba(91,184,232,0.2);
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .step-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .process-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .process-card p { font-size: 0.88rem; color: var(--gray); line-height: 1.6; font-weight: 300; }
+
+  /* ---- SERVICES ---- */
+  .services-section { background: rgba(26,46,68,0.3); }
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+
+  .service-card {
+    border: 1px solid rgba(91,184,232,0.12);
+    border-radius: 20px; padding: 2.5rem;
+    background: rgba(13,30,46,0.6);
+    position: relative; overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .service-card:hover { border-color: rgba(91,184,232,0.3); transform: translateY(-3px); }
+  .service-card.featured {
+    background: linear-gradient(135deg, rgba(91,184,232,0.1), rgba(26,46,68,0.8));
+    border-color: rgba(91,184,232,0.25);
+    grid-column: span 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(91,184,232,0.5), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .service-card:hover::before { opacity: 1; }
+
+  .service-tag {
+    display: inline-block;
+    background: rgba(118,224,194,0.1); color: var(--accent);
+    border: 1px solid rgba(118,224,194,0.2);
+    padding: 0.25rem 0.75rem; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .service-card h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.8rem; }
+  .service-card p { color: rgba(244,248,252,0.6); font-size: 0.92rem; line-height: 1.7; font-weight: 300; }
+
+  .service-visual {
+    background: rgba(91,184,232,0.05);
+    border: 1px solid rgba(91,184,232,0.15);
+    border-radius: 12px; padding: 2rem;
+    text-align: center; font-size: 5rem;
+  }
+
+  /* ---- WHY THERIAN ---- */
+  .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.5rem; margin-top: 3rem; }
+  .why-card {
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(91,184,232,0.1);
+    transition: border-color 0.3s;
+  }
+  .why-card:hover { border-color: rgba(91,184,232,0.25); }
+  .why-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .why-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .why-card p { font-size: 0.87rem; color: var(--gray); line-height: 1.6; font-weight: 300; }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    text-align: center;
+    padding: 8rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(91,184,232,0.07) 0%, transparent 70%);
+  }
+  .cta-section h2 { font-size: clamp(2.5rem, 5vw, 4rem); max-width: 700px; margin: 0 auto 1.5rem; }
+  .cta-section p { color: rgba(244,248,252,0.55); font-size: 1.1rem; max-width: 500px; margin: 0 auto 3rem; font-weight: 300; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    border-top: 1px solid rgba(91,184,232,0.1);
+    padding: 3rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo { display: flex; align-items: center; gap: 0.6rem; }
+  .footer-logo span { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--white); }
+  footer p { font-size: 0.82rem; color: var(--gray); }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.82rem; color: var(--gray); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-light); }
+
+  /* Animations on scroll via intersection observer */
+  .fade-up { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg width="36" height="36" viewBox="0 0 100 100">
+      <!-- Simplified Therian logo icon -->
+      <circle cx="35" cy="50" r="28" fill="#5BB8E8" opacity="0.9"/>
+      <circle cx="35" cy="50" r="12" fill="#A8D8F0"/>
+      <circle cx="35" cy="35" r="5" fill="#C8E8F8"/>
+      <circle cx="25" cy="52" r="4" fill="#C8E8F8"/>
+      <!-- gear right half -->
+      <path d="M50 35 Q70 35 75 50 Q70 65 50 65 Z" fill="#1A2E44"/>
+      <path d="M50 28 L55 22 L60 28" fill="#1A2E44"/>
+      <path d="M50 72 L55 78 L60 72" fill="#1A2E44"/>
+      <path d="M72 38 L80 35 L78 42" fill="#1A2E44"/>
+      <path d="M72 62 L80 65 L78 58" fill="#1A2E44"/>
+    </svg>
+    <span>Therian</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#why">Why Therian</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get a Quote</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-text">
+    <div class="hero-badge"><span></span> Enzymatic Plastic Recycling</div>
+    <h1>Microbes that <em>eat</em><br>your plastic<br>problem.</h1>
+    <p class="hero-sub">Therian's bioreactor technology uses engineered enzymes to break down plastics at the molecular level — delivering higher purity recyclate at a fraction of the cost.</p>
+    <div class="hero-actions">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#how" class="btn-ghost">How it works →</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="bioreactor">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+      <div class="reactor-core">
+        <div class="reactor-icon">🦠</div>
+      </div>
+      <!-- Particles -->
+      <div class="particle" style="width:8px;height:8px;left:60px;bottom:30px;animation-duration:4s;animation-delay:0s;"></div>
+      <div class="particle" style="width:5px;height:5px;left:200px;bottom:20px;animation-duration:5s;animation-delay:1s;background:var(--accent);"></div>
+      <div class="particle" style="width:6px;height:6px;left:120px;bottom:10px;animation-duration:3.5s;animation-delay:2s;"></div>
+      <div class="particle" style="width:4px;height:4px;left:250px;bottom:50px;animation-duration:4.5s;animation-delay:0.5s;background:var(--accent);"></div>
+      <div class="particle" style="width:7px;height:7px;left:80px;bottom:60px;animation-duration:6s;animation-delay:1.5s;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-item fade-up">
+    <div class="stat-num">98%</div>
+    <div class="stat-label">Plastic depolymerisation rate</div>
+  </div>
+  <div class="stat-item fade-up" style="animation-delay:0.1s">
+    <div class="stat-num">3×</div>
+    <div class="stat-label">Faster than mechanical recycling</div>
+  </div>
+  <div class="stat-item fade-up" style="animation-delay:0.2s">
+    <div class="stat-num">60%</div>
+    <div class="stat-label">Lower CO₂ vs virgin plastic production</div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-label">The Process</div>
+  <h2>From waste to resource<br>in four steps</h2>
+  <p class="section-sub">Our closed-loop bioreactor system handles everything from collection to output — with minimal human intervention and maximum yield.</p>
+
+  <div class="process-grid">
+    <div class="process-card fade-up">
+      <div class="step-num">01</div>
+      <div class="step-icon">🚛</div>
+      <h3>Plastic Collection</h3>
+      <p>We accept a wide range of post-consumer and industrial plastic waste streams — PET, PE, PP, and mixed plastics.</p>
+    </div>
+    <div class="process-card fade-up" style="transition-delay:0.1s">
+      <div class="step-num">02</div>
+      <div class="step-icon">⚗️</div>
+      <h3>Pre-treatment</h3>
+      <p>Waste is shredded and surface-treated to maximise enzyme contact surface area before entering the bioreactor.</p>
+    </div>
+    <div class="process-card fade-up" style="transition-delay:0.2s">
+      <div class="step-num">03</div>
+      <div class="step-icon">🦠</div>
+      <h3>Enzymatic Digestion</h3>
+      <p>Therian's proprietary enzyme cocktail depolymerises plastic chains into their base monomers inside our bioreactor vessels.</p>
+    </div>
+    <div class="process-card fade-up" style="transition-delay:0.3s">
+      <div class="step-num">04</div>
+      <div class="step-icon">✨</div>
+      <h3>Monomer Recovery</h3>
+      <p>Pure monomers are recovered, purified, and delivered back as virgin-quality feedstock for reuse in manufacturing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="services-section">
+  <div class="section-label">Services</div>
+  <h2>What we offer</h2>
+  <p class="section-sub">Flexible recycling solutions for businesses of every size — from pilot trials to full-scale continuous processing.</p>
+
+  <div class="services-grid">
+    <div class="service-card featured">
+      <div>
+        <div class="service-tag">Core Service</div>
+        <h3>Bioreactor Plastic Recycling</h3>
+        <p>Our flagship service: send us your plastic waste and we return certified food-grade or industrial-grade recycled monomer. We handle collection logistics, processing, quality testing, and documentation — providing full chain-of-custody for ESG reporting.</p>
+        <a href="#contact" class="btn-primary" style="display:inline-block;margin-top:1.5rem;">Request a Quote</a>
+      </div>
+      <div class="service-visual">🧪<br><small style="font-size:1rem;color:var(--gray);display:block;margin-top:0.5rem">Bioreactor System</small></div>
+    </div>
+
+    <div class="service-card fade-up">
+      <div class="service-tag">On-site</div>
+      <h3>Modular Bioreactor Installation</h3>
+      <p>For high-volume producers. We install and operate a modular Therian bioreactor unit directly at your facility, eliminating transport costs and giving you real-time processing data.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.1s">
+      <div class="service-tag">R&D</div>
+      <h3>Custom Enzyme Development</h3>
+      <p>Have a specialist polymer or contaminated waste stream? Our biochemistry team engineers tailored enzyme variants optimised for your specific plastic type.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.2s">
+      <div class="service-tag">Consulting</div>
+      <h3>Recycling Audit & Strategy</h3>
+      <p>We assess your current waste streams and identify where enzymatic recycling delivers the greatest ROI, and help you build a roadmap to compliance with Extended Producer Responsibility targets.</p>
+    </div>
+    <div class="service-card fade-up" style="transition-delay:0.3s">
+      <div class="service-tag">Certification</div>
+      <h3>Recycled Content Certification</h3>
+      <p>Full third-party verified documentation of recycled content output, suitable for regulatory filings, investor ESG packs, and customer transparency reports.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY THERIAN -->
+<section id="why">
+  <div class="section-label">Advantages</div>
+  <h2>Why enzymatic recycling<br>beats the alternatives</h2>
+
+  <div class="why-grid">
+    <div class="why-card fade-up">
+      <div class="why-icon">🎯</div>
+      <h3>Virgin-quality output</h3>
+      <p>Enzymatic depolymerisation produces monomers identical in purity to virgin feedstock — enabling infinite recycling loops without quality degradation.</p>
+    </div>
+    <div class="why-card fade-up" style="transition-delay:0.1s">
+      <div class="why-icon">♻️</div>
+      <h3>Mixed & contaminated plastics</h3>
+      <p>Unlike mechanical recycling, our enzymes handle coloured, contaminated, and multilayer plastics that would otherwise go to landfill or incineration.</p>
+    </div>
+    <div class="why-card fade-up" style="transition-delay:0.2s">
+      <div class="why-icon">🌍</div>
+      <h3>Net-positive carbon economics</h3>
+      <p>Every tonne processed through Therian displaces virgin monomer production, saving an average of 2.1 tonnes of CO₂ equivalent per tonne of plastic.</p>
+    </div>
+    <div class="why-card fade-up" style="transition-delay:0.3s">
+      <div class="why-icon">💰</div>
+      <h3>Better economics at scale</h3>
+      <p>Our continuous bioreactor process has 40% lower operational costs vs pyrolysis alternatives, with a breakeven of as little as 500kg/day input.</p>
+    </div>
+    <div class="why-card fade-up" style="transition-delay:0.4s">
+      <div class="why-icon">📊</div>
+      <h3>Full reporting & traceability</h3>
+      <p>Blockchain-anchored chain-of-custody records provide audit-ready documentation for EPR compliance, CBAM submissions, and B2B sustainability claims.</p>
+    </div>
+    <div class="why-card fade-up" style="transition-delay:0.5s">
+      <div class="why-icon">⚡</div>
+      <h3>Modular & scalable</h3>
+      <p>From 100kg pilot batches to multi-tonne continuous processing — the same enzyme technology scales linearly with no retooling required.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="section-label">Get Started</div>
+  <h2>Ready to close the<br><em style="color:var(--accent);font-style:normal">plastic loop?</em></h2>
+  <p>Talk to our team about your waste stream. We'll assess your volumes, run a cost model, and show you exactly what Therian can return to you.</p>
+  <div class="cta-buttons">
+    <a href="mailto:hello@therian.bio" class="btn-primary" style="font-size:1rem;padding:1rem 2.5rem;">Contact our team</a>
+    <a href="#how" class="btn-ghost" style="font-size:1rem;padding:1rem 2.5rem;">Learn more</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <span>🦠 Therian</span>
+  </div>
+  <p style="color:var(--gray);font-size:0.82rem">© 2025 Therian Ltd. Enzymatic Plastic Recycling.</p>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">hello@therian.bio</a>
+  </div>
+</footer>
+
+<script>
+  // Intersection observer for fade-up animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
